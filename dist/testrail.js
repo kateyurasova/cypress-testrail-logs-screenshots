@@ -1,6 +1,6 @@
 "use strict";
 var fs = require('fs');
-const markdown = require('logdown/src/markdown/node')
+const markdown = require('logdown/src/markdown/node');
 var find = require('find');
 var request = require('request');
 var globalRunId = null;
