@@ -1,33 +1,33 @@
 {
-  "_from": "cypress-testrail-custom@^1.0.2",
-  "_id": "cypress-testrail-custom@1.0.2",
+  "_from": "cypress-testrail-logs-screenshots@^1.0.0",
+  "_id": "cypress-testrail-logs-screenshots@1.0.0",
   "_inBundle": false,
   "_integrity": "sha512-JcReghicr0RZWkIp6Ogt3xe9DndIm896BXW9AMScBXwNj2WEhxwVY6j2dzq69qRmwyOg/6+vUHeXSN5MZv4sVg==",
-  "_location": "/cypress-testrail-custom",
+  "_location": "/cypress-testrail-logs-screenshots",
   "_phantomChildren": {},
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "cypress-testrail-custom@^1.0.2",
+    "raw": "cypress-testrail-custom@^1.0.0",
     "name": "cypress-testrail-custom",
-    "escapedName": "cypress-testrail-custom",
-    "rawSpec": "^1.0.2",
+    "escapedName": "cypress-testrail-logs-screenshots",
+    "rawSpec": "^1.0.0",
     "saveSpec": null,
-    "fetchSpec": "^1.0.2"
+    "fetchSpec": "^1.0.0"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/cypress-testrail-accumulative-reporter/-/cypress-testrail-custom-1.0.2.tgz",
+  "_resolved": "https://registry.npmjs.org/cypress-testrail-logs-screenshots/-/cypress-testrail-logs-screenshots-1.0.0.tgz",
   "_shasum": "3e16aaf280cfc3bea6b234c336b6c98f9f8b2930",
-  "_spec": "cypress-testrail-custom@^1.0.2",
+  "_spec": "cypress-testrail-custom@^1.0.0",
   "author": {
     "name": "Kate Yurasova",
     "email": "kateyurasova@gmail.com"
   },
   "bugs": {
-    "url": "https://github.com/kateyruasova/cypress-testrail-custom/issues"
+    "url": "https://github.com/kateyurasova/cypress-testrail-logs-screenshots/issues"
   },
   "bundleDependencies": false,
   "dependencies": {
@@ -49,7 +49,7 @@
     "rimraf": "^2.5.4",
     "typescript": "^2.1.4"
   },
-  "homepage": "https://github.com/kateyurasova/cypress-testrail-custom#readme",
+  "homepage": "https://github.com/kateyurasova/cypress-testrail-logs-screenshots#readme",
   "keywords": [
     "cypress",
     "testrail",
@@ -61,12 +61,12 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kateyurasova/cypress-testrail-custom.git"
+    "url": "git+https://github.com/kateyurasova/cypress-testrail-logs-screenshots.git"
   },
   "scripts": {
     "build": "npm run clean && npm run tsc",
     "clean": "rimraf dist",
     "tsc": "tsc"
   },
-  "version": "1.0.3"
+  "version": "1.0.0"
 }
