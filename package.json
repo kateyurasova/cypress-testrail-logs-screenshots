@@ -1,0 +1,73 @@
+{
+  "_from": "cypress-testrail-custom@^1.0.0",
+  "_id": "cypress-testrail-custom@1.0.0",
+  "_inBundle": false,
+  "_integrity": "sha512-JcReghicr0RZWkIp6Ogt3xe9DndIm896BXW9AMScBXwNj2WEhxwVY6j2dzq69qRmwyOg/6+vUHeXSN5MZv4sVg==",
+  "_location": "/cypress-testrail-custom",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "cypress-testrail-custom@^1.0.0",
+    "name": "cypress-testrail-custom",
+    "escapedName": "cypress-testrail-custom",
+    "rawSpec": "^1.0.0",
+    "saveSpec": null,
+    "fetchSpec": "^1.1.4"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/cypress-testrail-accumulative-reporter/-/cypress-testrail-accumulative-reporter-1.1.4.tgz",
+  "_shasum": "3e16aaf280cfc3bea6b234c336b6c98f9f8b2930",
+  "_spec": "cypress-testrail-accumulative-reporter@^1.1.4",
+  "_where": "D:\\CypressExampleForNewProject\\learn-cypress-example",
+  "author": {
+    "name": "Milutin Savovic",
+    "email": "mickosavovic@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/kateyruasova/cypress-testrail-custom/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "btoa": "^1.1.2",
+    "chalk": "^2.4.1",
+    "find": "^0.3.0",
+    "mocha": "^2.2.5",
+    "moment": "^2.22.1"
+  },
+  "deprecated": false,
+  "description": "A Testrail reporter for cypress including TestRail API basic library",
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.36",
+    "@types/node": "^6.0.58",
+    "chai": "^3.5.0",
+    "fs": "0.0.1-security",
+    "rimraf": "^2.5.4",
+    "typescript": "^2.1.4"
+  },
+  "homepage": "https://github.com/kateyurasova/cypress-testrail-custom#readme",
+  "keywords": [
+    "cypress",
+    "testrail",
+    "reporter"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "cypress-testrail-custom",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kateyurasova/cypress-testrail-custom.git"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run tsc",
+    "clean": "rimraf dist",
+    "tsc": "tsc"
+  },
+  "version": "1.0.0"
+}
