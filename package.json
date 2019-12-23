@@ -8,8 +8,8 @@
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "cypress-testrail-custom@^1.0.0",
-    "name": "cypress-testrail-custom",
+    "raw": "cypress-testrail-logs-screenshots^1.0.0",
+    "name": "cypress-testrail-logs-screenshots",
     "escapedName": "cypress-testrail-logs-screenshots",
     "rawSpec": "^1.0.0",
     "saveSpec": null,
@@ -57,7 +57,7 @@
   ],
   "license": "MIT",
   "main": "index.js",
-  "name": "cypress-testrail-custom",
+  "name": "cypress-testrail-logs-screenshots",
   "private": false,
   "repository": {
     "type": "git",
