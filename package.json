@@ -1,6 +1,6 @@
 {
-  "_from": "cypress-testrail-custom@^1.0.0",
-  "_id": "cypress-testrail-custom@1.0.0",
+  "_from": "cypress-testrail-custom@^1.0.1",
+  "_id": "cypress-testrail-custom@1.0.1",
   "_inBundle": false,
   "_integrity": "sha512-JcReghicr0RZWkIp6Ogt3xe9DndIm896BXW9AMScBXwNj2WEhxwVY6j2dzq69qRmwyOg/6+vUHeXSN5MZv4sVg==",
   "_location": "/cypress-testrail-custom",
@@ -8,12 +8,12 @@
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "cypress-testrail-custom@^1.0.0",
+    "raw": "cypress-testrail-custom@^1.0.1",
     "name": "cypress-testrail-custom",
     "escapedName": "cypress-testrail-custom",
-    "rawSpec": "^1.0.0",
+    "rawSpec": "^1.0.1",
     "saveSpec": null,
-    "fetchSpec": "^1.1.4"
+    "fetchSpec": "^1.0.1"
   },
   "_requiredBy": [
     "#DEV:/",
@@ -69,5 +69,5 @@
     "clean": "rimraf dist",
     "tsc": "tsc"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
