@@ -12,7 +12,7 @@ To get log in logs folder use e.g. cypress-failed-log (https://github.com/bahmut
 ## Install
 
 ```shell
-$ npm install cypress-testrail-custom --save-dev
+$ npm install cypress-testrail-custom-logs-and-screenshots --save-dev
 ```
 
 ## Usage
