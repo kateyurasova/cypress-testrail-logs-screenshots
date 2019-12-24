@@ -1,6 +1,6 @@
 {
-  "_from": "cypress-testrail-logs-screenshots@^1.0.5",
-  "_id": "cypress-testrail-logs-screenshots@1.0.5",
+  "_from": "cypress-testrail-logs-screenshots@^1.0.6",
+  "_id": "cypress-testrail-logs-screenshots@1.0.6",
   "_inBundle": false,
   "_integrity": "sha512-JcReghicr0RZWkIp6Ogt3xe9DndIm896BXW9AMScBXwNj2WEhxwVY6j2dzq69qRmwyOg/6+vUHeXSN5MZv4sVg==",
   "_location": "/cypress-testrail-logs-screenshots",
@@ -8,20 +8,20 @@
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "cypress-testrail-logs-screenshots^1.0.5",
+    "raw": "cypress-testrail-logs-screenshots^1.0.6",
     "name": "cypress-testrail-logs-screenshots",
     "escapedName": "cypress-testrail-logs-screenshots",
-    "rawSpec": "^1.0.5",
+    "rawSpec": "^1.0.6",
     "saveSpec": null,
-    "fetchSpec": "^1.0.5"
+    "fetchSpec": "^1.0.6"
   },
   "_requiredBy": [
     "#DEV:/",
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/cypress-testrail-logs-screenshots/-/cypress-testrail-logs-screenshots-1.0.5.tgz",
+  "_resolved": "https://registry.npmjs.org/cypress-testrail-logs-screenshots/-/cypress-testrail-logs-screenshots-1.0.6.tgz",
   "_shasum": "3e16aaf280cfc3bea6b234c336b6c98f9f8b2930",
-  "_spec": "cypress-testrail-logs-screenshots@^1.0.5",
+  "_spec": "cypress-testrail-logs-screenshots@^1.0.6",
   "author": {
     "name": "Kate Yurasova",
     "email": "kateyurasova@gmail.com"
@@ -69,5 +69,5 @@
     "clean": "rimraf dist",
     "tsc": "tsc"
   },
-  "version": "1.0.5"
+  "version": "1.0.6"
 }
