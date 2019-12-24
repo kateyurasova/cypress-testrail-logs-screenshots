@@ -49,17 +49,20 @@ var TestRail = /** @class */ (function () {
 
     TestRail.prototype.clearLogs = function (name, description) {
         var _this = this;
-        console.log("============= Clear logs =============")
-        let filePath = './cypress/logs/'
-        const find = require('find');
-        find.file(filePath, (files) => {
-            files.forEach(file => {
-                console.log('file name ' + file)
-                fs.unlink(file, err => {
-                    if (err) throw err;
+        try {
+            let filePath = './cypress/logs/'
+            const find = require('find');
+            find.file(filePath, (files) => {
+                files.forEach(file => {
+                    console.log('file name ' + file)
+                    fs.unlink(file, err => {
+                        if (err) throw err;
+                    });
                 });
             });
-        });
+        } catch (err) {
+            console.log('Log folder does not exist', err)
+        }
 
     };
 
@@ -230,7 +233,6 @@ var TestRail = /** @class */ (function () {
                     this.loadStatusAndComments(statusAndCommentsData, runId)
                 })
             });
-
         } catch (err) {
             console.log('Error on adding log file', err)
         }
