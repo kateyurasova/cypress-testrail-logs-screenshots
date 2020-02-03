@@ -31,56 +31,59 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
         var _this = _super.call(this, runner) || this;
         _this.results = [];
         var reporterOptions = options.reporterOptions;
-        _this.testRail = new testrail_1.TestRail(reporterOptions);
-        _this.validate(reporterOptions, 'domain');
-        _this.validate(reporterOptions, 'username');
-        _this.validate(reporterOptions, 'password');
-        _this.validate(reporterOptions, 'projectId');
-        runner.on('start', function () {
-            var executionDateTime = moment().format('MMM Do YYYY, HH:mm (Z)');
-            var name = (reporterOptions.runName || 'Automated test run') + " " + executionDateTime;
-            var description = 'For the Cypress run visit https://dashboard.cypress.io/#/projects/runs';
-            _this.testRail.createPlan(name, description);
-            _this.testRail.clearLogs();
-        });
-        runner.on('pass', function (test) {
-            var caseIds = shared_1.titleToCaseIds(test.title);
-            if (caseIds.length > 0) {
-                var results = caseIds.map(function (caseId) {
-                    return {
-                        case_id: caseId,
-                        status_id: testrail_interface_1.Status.Passed,
-                        comment: "Execution time: " + test.duration + "ms",
-                    };
-                });
-                (_a = _this.results).push.apply(_a, results);
-            }
-            var _a;
-        });
-        runner.on('fail', function (test) {
-            var caseIds = shared_1.titleToCaseIds(test.title);
-            if (caseIds.length > 0) {
-                var results = caseIds.map(function (caseId) {
-                    return {
-                        case_id: caseId,
-                        status_id: testrail_interface_1.Status.Failed,
-                        comment: "FAILURE REASON\n==============\n" + test.err.message
-                    };
-                });
-                (_a = _this.results).push.apply(_a, results);
-            }
-            var _a;
-        });
-        runner.on('end', function () {
-            var _a;
-            if (_this.results.length == 0) {
-                console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
-                console.warn('\n', 'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx', '\n');
-                // _this.testRail.deleteRun();
-                return;
-            }
-            _this.testRail.publishResults(_this.results)
-        });
+        _this.validate(reporterOptions, 'active');
+        if (reporterOptions['active']) {
+            _this.testRail = new testrail_1.TestRail(reporterOptions);
+            _this.validate(reporterOptions, 'domain');
+            _this.validate(reporterOptions, 'username');
+            _this.validate(reporterOptions, 'password');
+            _this.validate(reporterOptions, 'projectId');
+            runner.on('start', function () {
+                var executionDateTime = moment().format('MMM Do YYYY, HH:mm (Z)');
+                var name = (reporterOptions.runName || 'Automated test run') + " " + executionDateTime;
+                var description = 'For the Cypress run visit https://dashboard.cypress.io/#/projects/runs';
+                _this.testRail.createPlan(name, description);
+                _this.testRail.clearLogs();
+            });
+            runner.on('pass', function (test) {
+                var caseIds = shared_1.titleToCaseIds(test.title);
+                if (caseIds.length > 0) {
+                    var results = caseIds.map(function (caseId) {
+                        return {
+                            case_id: caseId,
+                            status_id: testrail_interface_1.Status.Passed,
+                            comment: "Execution time: " + test.duration + "ms",
+                        };
+                    });
+                    (_a = _this.results).push.apply(_a, results);
+                }
+                var _a;
+            });
+            runner.on('fail', function (test) {
+                var caseIds = shared_1.titleToCaseIds(test.title);
+                if (caseIds.length > 0) {
+                    var results = caseIds.map(function (caseId) {
+                        return {
+                            case_id: caseId,
+                            status_id: testrail_interface_1.Status.Failed,
+                            comment: "FAILURE REASON\n==============\n" + test.err.message
+                        };
+                    });
+                    (_a = _this.results).push.apply(_a, results);
+                }
+                var _a;
+            });
+            runner.on('end', function () {
+                var _a;
+                if (_this.results.length == 0) {
+                    console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
+                    console.warn('\n', 'No testcases were matched. Ensure that your tests are declared correctly and matches Cxxx', '\n');
+                    // _this.testRail.deleteRun();
+                    return;
+                }
+                _this.testRail.publishResults(_this.results)
+            });
+        }
         return _this;
     }
 
@@ -97,4 +100,3 @@ var CypressTestRailReporter = /** @class */ (function (_super) {
     return CypressTestRailReporter;
 }(mocha_1.reporters.Spec));
 exports.CypressTestRailReporter = CypressTestRailReporter;
-//# sourceMappingURL=cypress-testrail-reporter.js.map
