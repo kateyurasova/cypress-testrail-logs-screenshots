@@ -19,7 +19,6 @@ var TestRail = /** @class */ (function () {
     }
 
     TestRail.prototype.deletePlans = function (name, description) {
-        var _this = this;
         axios({
             method: 'get',
             url: this.base + "/get_plans/" + this.options.projectId,
@@ -48,7 +47,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.clearLogs = function (name, description) {
-        var _this = this;
         try {
             let filePath = './cypress/logs/'
             const find = require('find');
@@ -150,7 +148,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.publishResults = function (results) {
-        var _this = this;
         var promises = [];
         var runIdSet = new Set();
 
@@ -197,7 +194,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.loadAttachment = function (resultId, attachment) {
-        var _this = this;
         const options = {
             method: "POST",
             url: this.base + "/add_attachment_to_result/" + resultId,
@@ -219,7 +215,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.addAttachmentToResult = function (result, loadedResultId) {
-        var _this = this;
         var caseId = result.case_id
         try {
             find.file('./cypress/screenshots/', (files) => {
@@ -233,9 +228,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.addLogsToFailedTests = function (results, runId) {
-        var _this = this;
-        var promises = [];
-
         results.forEach(result => {
             find.file('./cypress/logs/', (files) => {
                 files.filter(file => file.includes(`${result.case_id}`)).forEach(logfile => {
@@ -280,7 +272,6 @@ var TestRail = /** @class */ (function () {
     };
 
     TestRail.prototype.loadTestResultsIntoSuite = function (results, runId) {
-        var statusAndCommentsData = [];
         var promises = [];
 
         results.forEach(result => {
@@ -296,11 +287,6 @@ var TestRail = /** @class */ (function () {
             console.log(promises.length)
             this.loadStatusAndComments(promises, runId).then(loadedResults => {
                 try {
-                    console.log("Loaded Results");
-                    console.log(loadedResults);
-                    results.forEach(result => {
-                        console.log(result.case_id);
-                    })
                     loadedResults.forEach((loadedResult, index) => {
                         this.addAttachmentToResult(results[index], loadedResult['id']);
                     })
