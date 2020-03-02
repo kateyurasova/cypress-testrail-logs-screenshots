@@ -151,14 +151,29 @@ var TestRail = /** @class */ (function () {
 
     TestRail.prototype.publishResults = function (results) {
         var _this = this;
+        var promises = [];
+        var runIdSet = new Set();
+
         results.forEach(result => {
-            this.getCaseData(result['case_id']).then(caseData => {
-                this.loadTestResultsIntoSuite(result, globalRuns.get(caseData.suite_id))
-            })
+            promises.push(
+                this.getCaseData(result['case_id']).then(caseData => {
+                    result.runId = globalRuns.get(caseData.suite_id);
+                    runIdSet.add(result.runId);
+                    return result;
+                }))
         })
+
+        Promise.all(promises).then((value) => {
+                runIdSet.forEach(id => {
+                    console.log("runId: " + id);
+                    const resultsForLoading = results.filter(result => result.runId === id);
+                    this.loadTestResultsIntoSuite(resultsForLoading, id)
+                })
+            }
+        );
     };
 
-    TestRail.prototype.loadStatusAndComments = function (result, runId) {
+    TestRail.prototype.loadStatusAndComments = function (results, runId) {
         var _this = this;
         return axios({
             method: 'post',
@@ -168,10 +183,13 @@ var TestRail = /** @class */ (function () {
                 username: this.options.username,
                 password: this.options.password,
             },
-            data: JSON.stringify({results: [result]}),
+            data: JSON.stringify({results: results}),
         }).then(function (response) {
             console.log('\n', chalk.magenta.underline.bold('(TestRail Reporter)'));
-            console.log('\n', `Test ${result['case_id']}` + " - Results are published to " + chalk.magenta("https://" + _this.options.domain + "/index.php?/runs/view/" + runId), '\n');
+            results.forEach(result => {
+                console.log('\n', `Test ${result['case_id']}` + " - Results are published to "
+                    + chalk.magenta("https://" + _this.options.domain + "/index.php?/runs/view/" + runId), '\n');
+            })
             return response.data
         }).catch(function (error) {
             return console.error(error);
@@ -200,7 +218,7 @@ var TestRail = /** @class */ (function () {
         })
     };
 
-    TestRail.prototype.addAttachmentToResult = function (result, loadedResultId, runId) {
+    TestRail.prototype.addAttachmentToResult = function (result, loadedResultId) {
         var _this = this;
         var caseId = result.case_id
         try {
@@ -214,9 +232,11 @@ var TestRail = /** @class */ (function () {
         }
     };
 
-    TestRail.prototype.addLogsToFailedTests = function (result, runId) {
+    TestRail.prototype.addLogsToFailedTests = function (results, runId) {
         var _this = this;
-        try {
+        var promises = [];
+
+        results.forEach(result => {
             find.file('./cypress/logs/', (files) => {
                 files.filter(file => file.includes(`${result.case_id}`)).forEach(logfile => {
                     var contents = fs.readFileSync(logfile);
@@ -225,19 +245,19 @@ var TestRail = /** @class */ (function () {
                     jsonContent.testCommands = jsonContent.testCommands
                         .map(formatMarkdown).join('\n')
 
-                    var statusAndCommentsData = {
-                        case_id: result.case_id,
-                        status_id: result.status_id,
-                        comment: "FULL LOG\n================================\n" + jsonContent.testCommands
-                    };
-                    this.loadStatusAndComments(statusAndCommentsData, runId)
+                    try {
+                        this.loadStatusAndComments([{
+                            case_id: result.case_id,
+                            status_id: result.status_id,
+                            comment: "FULL LOG\n================================\n" + jsonContent.testCommands
+                        }], runId);
+                    } catch (err) {
+                        console.log('Error on adding log file', err);
+                    }
                 })
             });
-        } catch (err) {
-            console.log('Error on adding log file', err)
-        }
+        })
     };
-
 
     TestRail.prototype.loadLogsFile = function (results) {
         results.forEach(result => {
@@ -259,26 +279,40 @@ var TestRail = /** @class */ (function () {
         });
     };
 
-    TestRail.prototype.loadTestResultsIntoSuite = function (result, runId) {
-        var statusAndCommentsData = {
-            case_id: result.case_id,
-            status_id: result.status_id,
-            comment: result.comment
-        };
+    TestRail.prototype.loadTestResultsIntoSuite = function (results, runId) {
+        var statusAndCommentsData = [];
+        var promises = [];
 
-        this.loadStatusAndComments(statusAndCommentsData, runId).then(loadedResults => {
-            console.log(loadedResults)
-            try {
-                loadedResults.forEach(loadedResult => {
-                    this.addAttachmentToResult(result, loadedResult['id'], runId)
-                    this.addLogsToFailedTests(result, runId)
+        results.forEach(result => {
+            promises.push(
+                {
+                    case_id: result.case_id,
+                    status_id: result.status_id,
+                    comment: result.comment
                 })
-            } catch (err) {
-                console.log('Error on adding attachments/logs for loaded results', err)
-            }
         })
+
+        Promise.all(promises).then(() => {
+            console.log(promises.length)
+            this.loadStatusAndComments(promises, runId).then(loadedResults => {
+                try {
+                    console.log("Loaded Results");
+                    console.log(loadedResults);
+                    results.forEach(result => {
+                        console.log(result.case_id);
+                    })
+                    loadedResults.forEach((loadedResult, index) => {
+                        this.addAttachmentToResult(results[index], loadedResult['id']);
+                    })
+                } catch (err) {
+                    console.log('Error on adding attachments/logs for loaded results', err)
+                }
+
+                this.addLogsToFailedTests(results, runId);
+            })
+        })
+
     };
     return TestRail;
 }());
 exports.TestRail = TestRail;
-//# sourceMappingURL=testrail.js.map
