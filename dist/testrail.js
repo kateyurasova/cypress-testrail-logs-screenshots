@@ -1,6 +1,5 @@
 "use strict";
 var fs = require('fs');
-var reportingPlan = require('./planId.json')
 const markdown = require('logdown/src/markdown/node');
 var find = require('find');
 var request = require('request');
@@ -67,6 +66,8 @@ var TestRail = /** @class */ (function () {
 
     TestRail.prototype.createPlan = function (name, description) {
         var _this = this;
+        const pathToFile = "./node_modules/cypress-testrail-logs-screenshots/dist/" + process.env.build_id + ".json";
+
         if (globalPlanId === null) {
             this.getAllSuites().then(data => {
                 const suitesData = data.map(function (data) {
@@ -76,60 +77,79 @@ var TestRail = /** @class */ (function () {
                     };
                 });
 
-                if (reportingPlan.planId === null) {
-                    axios({
-                        method: 'post',
-                        url: this.base + "/add_plan/" + this.options.projectId,
-                        headers: {'Content-Type': 'application/json'},
-                        auth: {
-                            username: this.options.username,
-                            password: this.options.password,
-                        },
-                        data: JSON.stringify({
-                            name: name,
-                            entries: suitesData
-                        }),
-                    }).then(function (response) {
-                        response.data.entries.forEach(function (entry) {
-                            entry.runs.forEach(function (run) {
-                                globalRuns.set(run.suite_id, run.id)
-                            })
-                        })
-                        _this.planId = response.data.id;
-                        globalPlanId = response.data.id;
-
+                fs.access(pathToFile, fs.F_OK, (err) => {
+                    if (err) {
                         var planData = {};
-                        planData.planId = response.data.id;
-                        fs.writeFile ("./node_modules/cypress-testrail-logs-screenshots/dist/planId.json",
-                            JSON.stringify(planData), function(err) {
+                        planData.planId = null;
+                        console.log('Create plan id file');
+                        fs.writeFile(pathToFile,
+                            JSON.stringify(planData), function (err) {
                                 if (err) throw err;
                                 console.log('complete');
                             }
                         );
-                    }).catch(function (error) {
-                        return console.error(error);
-                    });
-                } else {
-                    axios({
-                        method: 'get',
-                        url: this.base + "/get_plan/" + reportingPlan.planId,
-                        headers: {'Content-Type': 'application/json'},
-                        auth: {
-                            username: this.options.username,
-                            password: this.options.password,
-                        }
-                    }).then(function (response) {
-                        response.data.entries.forEach(function (entry) {
-                            entry.runs.forEach(function (run) {
-                                globalRuns.set(run.suite_id, run.id)
+                        console.log('Create plan in Test Rail via API call');
+                        axios({
+                            method: 'post',
+                            url: this.base + "/add_plan/" + this.options.projectId,
+                            headers: {'Content-Type': 'application/json'},
+                            auth: {
+                                username: this.options.username,
+                                password: this.options.password,
+                            },
+                            data: JSON.stringify({
+                                name: name,
+                                entries: suitesData
+                            }),
+                        }).then(function (response) {
+                            response.data.entries.forEach(function (entry) {
+                                entry.runs.forEach(function (run) {
+                                    globalRuns.set(run.suite_id, run.id)
+                                })
                             })
-                        })
-                        _this.planId = response.data.id;
-                        globalPlanId = response.data.id;
-                    }).catch(function (error) {
-                        return console.error(error);
-                    });
-                }
+                            _this.planId = response.data.id;
+                            globalPlanId = response.data.id;
+                            planData.planId = response.data.id;
+
+                            fs.writeFile(pathToFile,
+                                JSON.stringify(planData), function (err) {
+                                    if (err) throw err;
+                                    console.log('Wrote plan id into file ' + planData.planId);
+                                }
+                            );
+                        }).catch(function (error) {
+                            return console.error(error);
+                        });
+                    } else {
+                        console.log('Test Rail Report already exists');
+                        var reportingPlan = {};
+                        while (reportingPlan.planId = JSON.parse(fs.readFileSync(pathToFile, 'utf8')).planId === null) {
+                            console.log('plan id still not received')
+                        }
+
+                        reportingPlan.planId = JSON.parse(fs.readFileSync(pathToFile, 'utf8')).planId;
+                        console.log('planId: ' + reportingPlan.planId);
+                        axios({
+                            method: 'get',
+                            url: this.base + "/get_plan/" + reportingPlan.planId,
+                            headers: {'Content-Type': 'application/json'},
+                            auth: {
+                                username: this.options.username,
+                                password: this.options.password,
+                            }
+                        }).then(function (response) {
+                            response.data.entries.forEach(function (entry) {
+                                entry.runs.forEach(function (run) {
+                                    globalRuns.set(run.suite_id, run.id)
+                                })
+                            })
+                            _this.planId = response.data.id;
+                            globalPlanId = response.data.id;
+                        }).catch(function (error) {
+                            return console.error(error);
+                        });
+                    }
+                })
             })
         }
     };
