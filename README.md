@@ -21,12 +21,13 @@ Add reporter to your `cypress.json`:
 
 ```json
 ...
-"reporter": "cypress-testrail-custom",
+"reporter": "cypress-testrail-logs-screenshots",
 "reporterOptions": {
   "domain": "yourdomain.testrail.com",
   "username": "username",
   "password": "password",
-  "projectId": 1  
+  "projectId": 1,
+  "active": true
 }
 ```
 
