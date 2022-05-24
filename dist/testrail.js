@@ -111,7 +111,7 @@ var TestRail = /** @class */ (function () {
                 this.getAllPlans().then(plansData => {
                     axios({
                         method: 'get',
-                        url: this.base + "/get_plan/" + plansData[0].id,
+                        url: this.base + "/get_plan/" + plansData.plans[0].id,
                         headers: {'Content-Type': 'application/json'},
                         auth: {
                             username: this.options.username,
